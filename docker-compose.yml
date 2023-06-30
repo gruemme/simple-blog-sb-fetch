@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  blog-db:
+    image: "postgres:15.1-alpine"
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - my_simple_blog_db_data:/var/lib/postgresql/data
+    environment:
+      - LANG=de_DE.utf8
+      - TZ=Europe/Berlin
+      - PGTZ=Europe/Berlin
+      - POSTGRES_INITDB_ARGS=--locale-provider=icu --icu-locale=de-DE
+      - POSTGRES_DB=my_simple_blog_db
+      - POSTGRES_USER=my_simple_blog_db_user
+      - POSTGRES_PASSWORD=passw0rd
+
+volumes:
+  my_simple_blog_db_data: {}
