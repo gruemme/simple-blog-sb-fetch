@@ -6,8 +6,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@EnableTransactionManagement
-@EnableJpaAuditing
 public class MySimpleBlogApplication {
 
     public static void main(String[] args) {
