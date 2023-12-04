@@ -61,13 +61,13 @@ $ mvn spring-boot:run
 ```
 
 The application creates the database schema if it does not exist and executes the
-[data-postgres.sql](src/main/resources/data-postgres.sql) on the database.
+[data.sql](src/main/resources/data.sql) on the database.
 This will create two users: *alice* (password: *alice*) and *bob* (password: *bob*).
 The passwords are generated using Bcrypt with 12 rounds, and
 you can generate them here: <https://bcrypt-generator.com/>.
 
 For automated tests, an embedded H2 database is used, which loads the two
-users through [data-h2.sql](src/test/resources/data-h2.sql).
+users through [data.sql](src/test/resources/data-h2.sql).
 
 ## Accessing Swagger-UI
 
