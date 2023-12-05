@@ -12,11 +12,10 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class MySimpleBlogApplicationTests {
 
-    @Autowired
-    private EntryController entryController;
+  @Autowired private EntryController entryController;
 
-    @Test
-    void contextLoads() {
-        assertThat(entryController).isNotNull();
-    }
+  @Test
+  void contextLoads() {
+    assertThat(entryController).isNotNull();
+  }
 }

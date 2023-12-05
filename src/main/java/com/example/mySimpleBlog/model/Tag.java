@@ -14,45 +14,43 @@ import java.util.Set;
 @Entity
 public class Tag {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private Long id;
-    @Column(unique = true)
-    private String name;
-    @ManyToMany(mappedBy = "tags")
-    @JsonBackReference
-    private Set<Entry> entries = new HashSet<>();
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonIgnore
+  private Long id;
 
-    public Tag() {
-    }
+  @Column(unique = true)
+  private String name;
 
-    public Tag(String name) {
-        this.name = name;
-    }
+  @ManyToMany(mappedBy = "tags")
+  @JsonBackReference
+  private Set<Entry> entries = new HashSet<>();
 
-    public Tag(String name, Set<Entry> entries) {
-        this.name = name;
-        this.entries = entries;
-    }
+  public Tag() {}
 
-    public Long getId() {
-        return id;
-    }
+  public Tag(String name) {
+    this.name = name;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public Tag(String name, Set<Entry> entries) {
+    this.name = name;
+    this.entries = entries;
+  }
 
-    public Set<Entry> getEntries() {
-        return entries;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    @Override
-    public String toString() {
-        return "Tag{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
+  public String getName() {
+    return name;
+  }
+
+  public Set<Entry> getEntries() {
+    return entries;
+  }
+
+  @Override
+  public String toString() {
+    return "Tag{" + "id=" + id + ", name='" + name + '\'' + '}';
+  }
 }

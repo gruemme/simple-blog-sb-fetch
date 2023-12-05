@@ -14,23 +14,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final BlogUserRepository blogUserRepository;
+  private final BlogUserRepository blogUserRepository;
 
-    public UserDetailsServiceImpl(BlogUserRepository blogUserRepository) {
-        this.blogUserRepository = blogUserRepository;
+  public UserDetailsServiceImpl(BlogUserRepository blogUserRepository) {
+    this.blogUserRepository = blogUserRepository;
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    System.out.println("Try to find " + username);
+    Optional<BlogUser> blogUserOptional = blogUserRepository.findByUsername(username);
+    if (blogUserOptional.isEmpty()) {
+      System.out.println("not found " + username);
+      throw new UsernameNotFoundException(username);
     }
+    BlogUser user = blogUserOptional.get();
+    System.out.println("found " + user);
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("Try to find " + username);
-        Optional<BlogUser> blogUserOptional = blogUserRepository.findByUsername(username);
-        if (blogUserOptional.isEmpty()) {
-            System.out.println("not found " + username);
-            throw new UsernameNotFoundException(username);
-        }
-        BlogUser user = blogUserOptional.get();
-        System.out.println("found " + user);
-
-        return new User(user.getUsername(), user.getPasswordHash(), Set.of(new SimpleGrantedAuthority("ROLE_USER")));
-    }
+    return new User(
+        user.getUsername(),
+        user.getPasswordHash(),
+        Set.of(new SimpleGrantedAuthority("ROLE_USER")));
+  }
 }

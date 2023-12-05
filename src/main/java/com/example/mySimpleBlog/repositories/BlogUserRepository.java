@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BlogUserRepository extends JpaRepository<BlogUser, Long> {
 
-    Optional<BlogUser> findByUsername(String username);
+  Optional<BlogUser> findByUsername(String username);
 }

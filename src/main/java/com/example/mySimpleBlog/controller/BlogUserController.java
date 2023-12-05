@@ -21,29 +21,31 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 public class BlogUserController {
 
-    private final BlogUserRepository blogUserRepository;
-    private final EntryService entryService;
+  private final BlogUserRepository blogUserRepository;
+  private final EntryService entryService;
 
-    public BlogUserController(BlogUserRepository blogUserRepository, EntryService entryService) {
-        this.blogUserRepository = blogUserRepository;
-        this.entryService = entryService;
-    }
+  public BlogUserController(BlogUserRepository blogUserRepository, EntryService entryService) {
+    this.blogUserRepository = blogUserRepository;
+    this.entryService = entryService;
+  }
 
-    @GetMapping(path = "/me")
-    @SecurityRequirement(name = "BasicAuth")
-    public BlogUser getCurrentUser(Authentication authentication) {
-        User currentUser = (User) (authentication.getPrincipal());
-        Optional<BlogUser> author = blogUserRepository.findByUsername(currentUser.getUsername());
+  @GetMapping(path = "/me")
+  @SecurityRequirement(name = "BasicAuth")
+  public BlogUser getCurrentUser(Authentication authentication) {
+    User currentUser = (User) (authentication.getPrincipal());
+    Optional<BlogUser> author = blogUserRepository.findByUsername(currentUser.getUsername());
 
-        return author.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
-    }
+    return author.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+  }
 
-    @GetMapping(path = "/user/{username}/entries")
-    @Transactional
-    public List<Entry> getEntriesByUser(@PathVariable String username, @ParameterObject Pageable pageable) {
-        Optional<BlogUser> blogUserOptional = blogUserRepository.findByUsername(username);
-        BlogUser author = blogUserOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+  @GetMapping(path = "/user/{username}/entries")
+  @Transactional
+  public List<Entry> getEntriesByUser(
+      @PathVariable String username, @ParameterObject Pageable pageable) {
+    Optional<BlogUser> blogUserOptional = blogUserRepository.findByUsername(username);
+    BlogUser author =
+        blogUserOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        return entryService.getEntriesByAuthor(author, pageable);
-    }
+    return entryService.getEntriesByAuthor(author, pageable);
+  }
 }

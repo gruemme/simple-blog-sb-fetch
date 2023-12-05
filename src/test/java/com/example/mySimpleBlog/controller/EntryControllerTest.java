@@ -20,22 +20,22 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-/**
- * Integration test, only works with a running and configured database.
- */
+/** Integration test, only works with a running and configured database. */
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class EntryControllerTest {
 
-    private static final String SIMPLE_ENTRY_REQUEST_BODY = """
+  private static final String SIMPLE_ENTRY_REQUEST_BODY =
+      """
             {
                 "title":"Hello",
                 "text": "This is my blog"
             }
             """;
 
-    private static final String ENTRY_REQUEST_BODY_WITH_TAGS = """
+  private static final String ENTRY_REQUEST_BODY_WITH_TAGS =
+      """
             {
                 "title":"Hello",
                 "text": "This is my blog",
@@ -43,7 +43,8 @@ public class EntryControllerTest {
             }
             """;
 
-    private static final String ENTRY_REQUEST_BODY_WITH_IMAGE = """
+  private static final String ENTRY_REQUEST_BODY_WITH_IMAGE =
+      """
             {
                 "title":"My first picture in my blog",
                 "text": "This is my blog",
@@ -52,42 +53,47 @@ public class EntryControllerTest {
             }
             """;
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @Test
-    @WithMockUser(username = "alice", password = "alice")
-    public void postSimpleEntryAndCorrectContent() throws Exception {
+  @Test
+  @WithMockUser(username = "alice", password = "alice")
+  public void postSimpleEntryAndCorrectContent() throws Exception {
 
-        this.mockMvc.perform(post("/entry")
-                        .content(SIMPLE_ENTRY_REQUEST_BODY)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(content().string(containsString("This is my blog")));
-    }
+    this.mockMvc
+        .perform(
+            post("/entry")
+                .content(SIMPLE_ENTRY_REQUEST_BODY)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isCreated())
+        .andExpect(content().string(containsString("This is my blog")));
+  }
 
-    @Test
-    @WithMockUser(username = "bob", password = "bob")
-    public void postEntryWithTagsAndExpectTwoCorrectTagsSuccess() throws Exception {
-        this.mockMvc.perform(post("/entry")
-                        .content(ENTRY_REQUEST_BODY_WITH_TAGS)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.tags", hasSize(2)))
-                .andExpect(jsonPath("$.tags[*].name", containsInAnyOrder("hello", "world")));
-    }
+  @Test
+  @WithMockUser(username = "bob", password = "bob")
+  public void postEntryWithTagsAndExpectTwoCorrectTagsSuccess() throws Exception {
+    this.mockMvc
+        .perform(
+            post("/entry")
+                .content(ENTRY_REQUEST_BODY_WITH_TAGS)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.tags", hasSize(2)))
+        .andExpect(jsonPath("$.tags[*].name", containsInAnyOrder("hello", "world")));
+  }
 
-    @Test
-    @WithMockUser(username = "alice", password = "alice")
-    public void postEntryWithImageAndExpectImageAndTypeIsCorrect() throws Exception {
-        this.mockMvc.perform(post("/entry")
-                        .content(ENTRY_REQUEST_BODY_WITH_IMAGE)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.titleImage.imageContent", hasLength(468)))
-                .andExpect(jsonPath("$.titleImage.contentType", is("application/png")));
-    }
+  @Test
+  @WithMockUser(username = "alice", password = "alice")
+  public void postEntryWithImageAndExpectImageAndTypeIsCorrect() throws Exception {
+    this.mockMvc
+        .perform(
+            post("/entry")
+                .content(ENTRY_REQUEST_BODY_WITH_IMAGE)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.titleImage.imageContent", hasLength(468)))
+        .andExpect(jsonPath("$.titleImage.contentType", is("application/png")));
+  }
 }

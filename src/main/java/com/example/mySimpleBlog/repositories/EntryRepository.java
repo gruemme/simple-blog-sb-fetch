@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EntryRepository extends JpaRepository<Entry, Long> {
 
-    List<Entry> findByTags_NameOrderByCreatedDesc(String tagName);
+  List<Entry> findByTags_NameOrderByCreatedDesc(String tagName);
 
-    List<Entry> findByAuthor(BlogUser author, Pageable pageable);
+  List<Entry> findByAuthor(BlogUser author, Pageable pageable);
 }

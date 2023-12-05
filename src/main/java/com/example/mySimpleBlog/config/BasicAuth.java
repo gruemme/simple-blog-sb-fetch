@@ -5,5 +5,4 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 // Just a marker for swagger
 @SecurityScheme(type = SecuritySchemeType.HTTP, name = "BasicAuth", scheme = "basic")
-public class BasicAuth {
-}
+public class BasicAuth {}

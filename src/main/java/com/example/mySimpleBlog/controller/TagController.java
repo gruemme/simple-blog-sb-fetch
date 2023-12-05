@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TagController {
 
-    private final EntryService entryService;
-    private final TagRepository tagRepository;
+  private final EntryService entryService;
+  private final TagRepository tagRepository;
 
-    public TagController(EntryService entryService, TagRepository tagRepository) {
-        this.entryService = entryService;
-        this.tagRepository = tagRepository;
-    }
+  public TagController(EntryService entryService, TagRepository tagRepository) {
+    this.entryService = entryService;
+    this.tagRepository = tagRepository;
+  }
 
-    @GetMapping(path = "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TagCount> getAllTags() {
-        return tagRepository.findTagCount();
-    }
+  @GetMapping(path = "/tags", produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<TagCount> getAllTags() {
+    return tagRepository.findTagCount();
+  }
 
-    @GetMapping(path = "/tag/{tagname}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Transactional(readOnly = true)
-    public List<Entry> getEntriesByTag(@PathVariable("tagname") String tagname) {
-        return entryService.getEntriesByTag(tagname);
-    }
+  @GetMapping(path = "/tag/{tagname}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @Transactional(readOnly = true)
+  public List<Entry> getEntriesByTag(@PathVariable("tagname") String tagname) {
+    return entryService.getEntriesByTag(tagname);
+  }
 }

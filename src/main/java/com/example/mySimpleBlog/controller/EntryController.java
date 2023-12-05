@@ -26,37 +26,41 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 public class EntryController {
 
-    private final EntryService entryService;
-    private final BlogUserRepository blogUserRepository;
+  private final EntryService entryService;
+  private final BlogUserRepository blogUserRepository;
 
-    public EntryController(EntryService entryService,
-                           BlogUserRepository blogUserRepository) {
-        this.entryService = entryService;
-        this.blogUserRepository = blogUserRepository;
-    }
+  public EntryController(EntryService entryService, BlogUserRepository blogUserRepository) {
+    this.entryService = entryService;
+    this.blogUserRepository = blogUserRepository;
+  }
 
-    @GetMapping(path = "/entries", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<Entry> getAllEntries(@ParameterObject Pageable pageable) {
-        return entryService.getAllEntries(pageable);
-    }
+  @GetMapping(path = "/entries", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Page<Entry> getAllEntries(@ParameterObject Pageable pageable) {
+    return entryService.getAllEntries(pageable);
+  }
 
-    @GetMapping(path = "/entry/{entryId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Entry getEntryById(@PathVariable(name = "entryId", required = true) Long entryId) {
-        return entryService.findById(entryId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-    }
+  @GetMapping(path = "/entry/{entryId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Entry getEntryById(@PathVariable(name = "entryId", required = true) Long entryId) {
+    return entryService
+        .findById(entryId)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+  }
 
-    @CrossOrigin
-    @PostMapping(path = "/entry", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    @SecurityRequirement(name = "BasicAuth")
-    @Transactional
-    public Entry createEntry(Authentication authentication, @RequestBody EntryInput entryInput) {
-        User currentUser = (User) (authentication.getPrincipal());
-        BlogUser author = blogUserRepository
-                .findByUsername(currentUser.getUsername())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+  @CrossOrigin
+  @PostMapping(
+      path = "/entry",
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.CREATED)
+  @SecurityRequirement(name = "BasicAuth")
+  @Transactional
+  public Entry createEntry(Authentication authentication, @RequestBody EntryInput entryInput) {
+    User currentUser = (User) (authentication.getPrincipal());
+    BlogUser author =
+        blogUserRepository
+            .findByUsername(currentUser.getUsername())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
 
-        return entryService.createEntryForUser(entryInput, author);
-    }
+    return entryService.createEntryForUser(entryInput, author);
+  }
 }

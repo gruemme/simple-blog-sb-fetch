@@ -15,44 +15,46 @@ import java.util.List;
 @Entity
 public class BlogUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false, unique = true)
-    private String username;
-    @Column(nullable = false)
-    @JsonIgnore
-    private String passwordHash;
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
-    private final List<Entry> entries = new ArrayList<>();
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    public BlogUser() {
-    }
+  @Column(nullable = false, unique = true)
+  private String username;
 
-    public BlogUser(String username, String passwordHash) {
-        this.username = username;
-        this.passwordHash = passwordHash;
-    }
+  @Column(nullable = false)
+  @JsonIgnore
+  private String passwordHash;
 
-    public Long getId() {
-        return id;
-    }
+  @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonBackReference
+  private final List<Entry> entries = new ArrayList<>();
 
-    public String getUsername() {
-        return username;
-    }
+  public BlogUser() {}
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
+  public BlogUser(String username, String passwordHash) {
+    this.username = username;
+    this.passwordHash = passwordHash;
+  }
 
-    public List<Entry> getEntries() {
-        return entries;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    @Override
-    public String toString() {
-        return "BlogUser{" + "id=" + id + ", username='" + username + '\'' + '}';
-    }
+  public String getUsername() {
+    return username;
+  }
+
+  public String getPasswordHash() {
+    return passwordHash;
+  }
+
+  public List<Entry> getEntries() {
+    return entries;
+  }
+
+  @Override
+  public String toString() {
+    return "BlogUser{" + "id=" + id + ", username='" + username + '\'' + '}';
+  }
 }

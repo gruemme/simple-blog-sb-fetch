@@ -22,70 +22,70 @@ import org.springframework.stereotype.Service;
 @Service
 public class EntryService {
 
-    private final EntryRepository entryRepository;
-    private final TagRepository tagRepository;
+  private final EntryRepository entryRepository;
+  private final TagRepository tagRepository;
 
-    public EntryService(EntryRepository entryRepository, TagRepository tagRepository) {
-        this.entryRepository = entryRepository;
-        this.tagRepository = tagRepository;
+  public EntryService(EntryRepository entryRepository, TagRepository tagRepository) {
+    this.entryRepository = entryRepository;
+    this.tagRepository = tagRepository;
+  }
+
+  public Page<Entry> getAllEntries(Pageable pageable) {
+    return entryRepository.findAll(pageable);
+  }
+
+  public Optional<Entry> findById(Long entryId) {
+    return entryRepository.findById(entryId);
+  }
+
+  public List<Entry> getEntriesByAuthor(BlogUser author, Pageable pageable) {
+    return entryRepository.findByAuthor(author, pageable);
+  }
+
+  public List<Entry> getEntriesByTag(String tagName) {
+    return entryRepository.findByTags_NameOrderByCreatedDesc(tagName);
+  }
+
+  public Entry createEntryForUser(EntryInput entryInput, BlogUser author) {
+    Image titleImage = createImageIfExists(entryInput);
+    Set<Tag> tags = getOrCreateTags(entryInput);
+
+    Entry newEntryToSave =
+        new Entry(entryInput.getTitle(), entryInput.getText(), titleImage, author, tags);
+    tags.stream().forEach(t -> t.getEntries().add(newEntryToSave));
+
+    Entry entrySaved = entryRepository.save(newEntryToSave);
+
+    return entryRepository.findById(entrySaved.getId()).get();
+  }
+
+  private Image createImageIfExists(EntryInput entryInput) {
+    if (entryInput.getImageData() == null || entryInput.getImageData().length <= 0) {
+      return null;
     }
 
-    public Page<Entry> getAllEntries(Pageable pageable) {
-        return entryRepository.findAll(pageable);
+    return new Image(entryInput.getImageContentType(), entryInput.getImageData());
+  }
+
+  private Set<Tag> getOrCreateTags(EntryInput entryInput) {
+    Set<String> tagInput =
+        entryInput.getTags() != null
+            ? entryInput.getTags().stream()
+                .map(String::trim)
+                .filter(Predicate.not(String::isEmpty))
+                .collect(Collectors.toSet())
+            : Collections.emptySet();
+    Set<Tag> tags = tagRepository.findByNameIn(tagInput);
+    if (tags.size() >= tagInput.size()) {
+      return tags;
     }
 
-    public Optional<Entry> findById(Long entryId) {
-        return entryRepository.findById(entryId);
-    }
-
-    public List<Entry> getEntriesByAuthor(BlogUser author, Pageable pageable) {
-        return entryRepository.findByAuthor(author, pageable);
-    }
-
-    public List<Entry> getEntriesByTag(String tagName) {
-        return entryRepository.findByTags_NameOrderByCreatedDesc(tagName);
-    }
-
-    public Entry createEntryForUser(EntryInput entryInput, BlogUser author) {
-        Image titleImage = createImageIfExists(entryInput);
-        Set<Tag> tags = getOrCreateTags(entryInput);
-
-        Entry newEntryToSave = new Entry(entryInput.getTitle(), entryInput.getText(), titleImage, author, tags);
-        tags.stream().forEach(t -> t.getEntries().add(newEntryToSave));
-
-        Entry entrySaved = entryRepository.save(newEntryToSave);
-
-        return entryRepository.findById(entrySaved.getId()).get();
-    }
-
-    private Image createImageIfExists(EntryInput entryInput) {
-        if (entryInput.getImageData() == null || entryInput.getImageData().length <= 0) {
-            return null;
-        }
-
-        return new Image(entryInput.getImageContentType(), entryInput.getImageData());
-    }
-
-    private Set<Tag> getOrCreateTags(EntryInput entryInput) {
-        Set<String> tagInput = entryInput.getTags() != null ?
-                entryInput.getTags().stream()
-                        .map(String::trim)
-                        .filter(Predicate.not(String::isEmpty))
-                        .collect(Collectors.toSet()) : Collections.emptySet();
-        Set<Tag> tags = tagRepository.findByNameIn(tagInput);
-        if (tags.size() >= tagInput.size()) {
-            return tags;
-        }
-
-        Set<String> tagsInDb = tags.stream()
-                .map(Tag::getName)
-                .collect(Collectors.toSet());
-        Set<Tag> tagsNotInDb = entryInput.getTags().stream()
-                .filter(t -> !tagsInDb.contains(t))
-                .map(Tag::new)
-                .collect(Collectors.toSet());
-        return Stream.of(tags, tagsNotInDb)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
-    }
+    Set<String> tagsInDb = tags.stream().map(Tag::getName).collect(Collectors.toSet());
+    Set<Tag> tagsNotInDb =
+        entryInput.getTags().stream()
+            .filter(t -> !tagsInDb.contains(t))
+            .map(Tag::new)
+            .collect(Collectors.toSet());
+    return Stream.of(tags, tagsNotInDb).flatMap(Collection::stream).collect(Collectors.toSet());
+  }
 }

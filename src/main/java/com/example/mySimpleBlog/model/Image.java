@@ -12,43 +12,45 @@ import jakarta.persistence.OneToOne;
 @Entity
 public class Image {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String contentType;
-    @Lob
-    @Column(nullable = false)
-    private byte[] imageContent;
-    @OneToOne(mappedBy = "titleImage", optional = false)
-    @JsonBackReference
-    private Entry entry;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    public Image() {
-    }
+  private String contentType;
 
-    public Image(String contentType, byte[] imageContent) {
-        this.contentType = contentType;
-        this.imageContent = imageContent;
-    }
+  @Lob
+  @Column(nullable = false)
+  private byte[] imageContent;
 
-    public Long getId() {
-        return id;
-    }
+  @OneToOne(mappedBy = "titleImage", optional = false)
+  @JsonBackReference
+  private Entry entry;
 
-    public String getContentType() {
-        return contentType;
-    }
+  public Image() {}
 
-    public byte[] getImageContent() {
-        return imageContent;
-    }
+  public Image(String contentType, byte[] imageContent) {
+    this.contentType = contentType;
+    this.imageContent = imageContent;
+  }
 
-    public Entry getEntry() {
-        return entry;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    @Override
-    public String toString() {
-        return "Image{" + "id=" + id + ", contentType='" + contentType + '\'' + '}';
-    }
+  public String getContentType() {
+    return contentType;
+  }
+
+  public byte[] getImageContent() {
+    return imageContent;
+  }
+
+  public Entry getEntry() {
+    return entry;
+  }
+
+  @Override
+  public String toString() {
+    return "Image{" + "id=" + id + ", contentType='" + contentType + '\'' + '}';
+  }
 }

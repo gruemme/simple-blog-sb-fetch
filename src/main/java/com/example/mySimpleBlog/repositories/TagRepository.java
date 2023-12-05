@@ -10,8 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    Set<Tag> findByNameIn(Collection<String> names);
+  Set<Tag> findByNameIn(Collection<String> names);
 
-    @Query("SELECT new com.example.mySimpleBlog.dto.TagCount(t.name, COUNT(e)) FROM Tag t LEFT JOIN t.entries e GROUP BY t ORDER BY COUNT(e) DESC")
-    List<TagCount> findTagCount();
+  @Query(
+      "SELECT new com.example.mySimpleBlog.dto.TagCount(t.name, COUNT(e)) FROM Tag t LEFT JOIN t.entries e GROUP BY t ORDER BY COUNT(e) DESC")
+  List<TagCount> findTagCount();
 }

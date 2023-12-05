@@ -19,77 +19,83 @@ import org.hibernate.annotations.CreationTimestamp;
 @Entity
 public class Entry {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
-    private String title;
-    @Lob
-    @Column(nullable = false)
-    private String text;
-    @CreationTimestamp
-    @Column(updatable = false)
-    private Instant created;
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private Image titleImage;
-    @ManyToOne(optional = false)
-    @JsonManagedReference
-    private BlogUser author;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Set<Tag> tags = new HashSet<>();
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    public Entry() {
-    }
+  @Column(nullable = false)
+  private String title;
 
-    public Entry(String title,
-                 String text,
-                 Image titleImage,
-                 BlogUser author,
-                 Set<Tag> tags) {
-        this.title = title;
-        this.text = text;
-        this.titleImage = titleImage;
-        this.author = author;
-        this.tags = tags;
-    }
+  @Lob
+  @Column(nullable = false)
+  private String text;
 
-    public Long getId() {
-        return id;
-    }
+  @CreationTimestamp
+  @Column(updatable = false)
+  private Instant created;
 
-    public String getTitle() {
-        return title;
-    }
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference
+  private Image titleImage;
 
-    public String getText() {
-        return text;
-    }
+  @ManyToOne(optional = false)
+  @JsonManagedReference
+  private BlogUser author;
 
-    public Instant getCreated() {
-        return created;
-    }
+  @ManyToMany(cascade = CascadeType.ALL)
+  @JsonManagedReference
+  private Set<Tag> tags = new HashSet<>();
 
-    public Image getTitleImage() {
-        return titleImage;
-    }
+  public Entry() {}
 
-    public BlogUser getAuthor() {
-        return author;
-    }
+  public Entry(String title, String text, Image titleImage, BlogUser author, Set<Tag> tags) {
+    this.title = title;
+    this.text = text;
+    this.titleImage = titleImage;
+    this.author = author;
+    this.tags = tags;
+  }
 
-    public Set<Tag> getTags() {
-        return tags;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    @Override
-    public String toString() {
-        return "Entry{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", created=" + created +
-                ", author=" + author +
-                '}';
-    }
+  public String getTitle() {
+    return title;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public Instant getCreated() {
+    return created;
+  }
+
+  public Image getTitleImage() {
+    return titleImage;
+  }
+
+  public BlogUser getAuthor() {
+    return author;
+  }
+
+  public Set<Tag> getTags() {
+    return tags;
+  }
+
+  @Override
+  public String toString() {
+    return "Entry{"
+        + "id="
+        + id
+        + ", title='"
+        + title
+        + '\''
+        + ", created="
+        + created
+        + ", author="
+        + author
+        + '}';
+  }
 }
