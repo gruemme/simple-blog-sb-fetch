@@ -19,7 +19,7 @@ public class SecurityConfiguration {
             "/entry/**", "/entries/**", "/tag/**", "/tags/**",
             "/user/**", "/error", "/swagger-ui.html", "/swagger-ui/**", "/v3/**",
             "/", "/js/**", "/css/**", "/index.html", "/create.html", "/favicon.ico",
-            "/tag.html*", "/login.html*"
+            "/tag.html*", "/login.html*", "/webjars/**"
     };
 
     @Bean
