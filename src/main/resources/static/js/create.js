@@ -13,7 +13,7 @@ function sendData(data) {
     const userCredentialString = sessionStorage.getItem("userCredential")
     const userCredential = JSON.parse(userCredentialString);
     const auth = btoa(userCredential.username + ':' + userCredential.password);
-    fetch('/entry', {
+    fetch('/entries', {
         method: 'POST', headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

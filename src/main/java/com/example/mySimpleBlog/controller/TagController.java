@@ -27,7 +27,7 @@ public class TagController {
         return tagRepository.findTagCount();
     }
 
-    @GetMapping(path = "/tag/{tagname}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/tags/{tagname}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional(readOnly = true)
     public List<Entry> getEntriesByTag(@PathVariable("tagname") String tagname) {
         return entryService.getEntriesByTag(tagname);

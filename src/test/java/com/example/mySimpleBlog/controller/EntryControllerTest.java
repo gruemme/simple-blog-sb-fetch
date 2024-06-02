@@ -59,7 +59,7 @@ public class EntryControllerTest {
     @WithMockUser(username = "alice", password = "alice")
     public void postSimpleEntryAndCorrectContent() throws Exception {
 
-        this.mockMvc.perform(post("/entry")
+        this.mockMvc.perform(post("/entries")
                         .content(SIMPLE_ENTRY_REQUEST_BODY)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -70,7 +70,7 @@ public class EntryControllerTest {
     @Test
     @WithMockUser(username = "bob", password = "bob")
     public void postEntryWithTagsAndExpectTwoCorrectTagsSuccess() throws Exception {
-        this.mockMvc.perform(post("/entry")
+        this.mockMvc.perform(post("/entries")
                         .content(ENTRY_REQUEST_BODY_WITH_TAGS)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -82,7 +82,7 @@ public class EntryControllerTest {
     @Test
     @WithMockUser(username = "alice", password = "alice")
     public void postEntryWithImageAndExpectImageAndTypeIsCorrect() throws Exception {
-        this.mockMvc.perform(post("/entry")
+        this.mockMvc.perform(post("/entries")
                         .content(ENTRY_REQUEST_BODY_WITH_IMAGE)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

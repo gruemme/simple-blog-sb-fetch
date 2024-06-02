@@ -5,7 +5,7 @@ function login() {
     credentials.password = document.getElementById('inputPassword').value;
 
     const auth = btoa(credentials.username + ':' + credentials.password);
-    fetch('/me', {
+    fetch('/users/me', {
         method: 'GET',
         headers: {
             Authorization: `Basic ${auth}`

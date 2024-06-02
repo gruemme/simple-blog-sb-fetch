@@ -29,7 +29,7 @@ public class BlogUserController {
         this.entryService = entryService;
     }
 
-    @GetMapping(path = "/me")
+    @GetMapping(path = "/users/me")
     @SecurityRequirement(name = "BasicAuth")
     public BlogUser getCurrentUser(Authentication authentication) {
         User currentUser = (User) (authentication.getPrincipal());
@@ -38,7 +38,7 @@ public class BlogUserController {
         return author.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }
 
-    @GetMapping(path = "/user/{username}/entries")
+    @GetMapping(path = "/users/{username}/entries")
     @Transactional
     public List<Entry> getEntriesByUser(@PathVariable String username, @ParameterObject Pageable pageable) {
         Optional<BlogUser> blogUserOptional = blogUserRepository.findByUsername(username);

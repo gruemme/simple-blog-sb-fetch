@@ -3,7 +3,7 @@ let tag = queryParams.get("tag");
 if (tag === null || tag === 'undefined') {
     location.href = "index.html"
 } else {
-    fetch('/tag/' + tag)
+    fetch('/tags/' + tag)
     .then(resp => resp.json())
     .then(function (data) {
         showEntries(data);

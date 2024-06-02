@@ -40,14 +40,14 @@ public class EntryController {
         return entryService.getAllEntries(pageable);
     }
 
-    @GetMapping(path = "/entry/{entryId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/entries/{entryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Entry getEntryById(@PathVariable(name = "entryId", required = true) Long entryId) {
         return entryService.findById(entryId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @CrossOrigin
-    @PostMapping(path = "/entry", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/entries", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @SecurityRequirement(name = "BasicAuth")
     @Transactional
